@@ -1,18 +1,17 @@
 <div align="center">
 
-# 🕵️ theHarvester OSINT Reconnaissance Lab
+# 🕵️ theHarvester — OSINT Reconnaissance Lab
 
-### Public Information Gathering & Domain Footprinting with Kali Linux
+### Passive Footprinting • Public Data Sources • Linux Security Lab
 
-![theHarvester](https://img.shields.io/badge/theHarvester-OSINT%20Tool-blue?style=for-the-badge&logo=github&logoColor=white)
-![Kali Linux](https://img.shields.io/badge/Kali%20Linux-Security%20Testing-black?style=for-the-badge&logo=kalilinux&logoColor=white)
-![OSINT](https://img.shields.io/badge/OSINT-Reconnaissance-purple?style=for-the-badge)
-![Cybersecurity](https://img.shields.io/badge/Cybersecurity-Learning-red?style=for-the-badge)
-![PsychoMods](https://img.shields.io/badge/PsychoMods-Tech%20Lab-8AFF00?style=for-the-badge&logo=github&logoColor=black)
+![theHarvester](https://img.shields.io/badge/Tool-theHarvester-7C3AED?style=for-the-badge&logo=linux&logoColor=white)
+![Kali Linux](https://img.shields.io/badge/Environment-Linux-111827?style=for-the-badge&logo=kalilinux&logoColor=white)
+![OSINT](https://img.shields.io/badge/Focus-OSINT-0EA5E9?style=for-the-badge)
+![Learning](https://img.shields.io/badge/Purpose-Educational-16A34A?style=for-the-badge)
 
-**A practical learning record for discovering publicly indexed domain information and interpreting reconnaissance results.**
+**A practical walkthrough by [PsychoMods](https://github.com/Psychomods666)**
 
-[GitHub Profile](https://github.com/Psychomods666) · [Upstream theHarvester Project](https://github.com/laramies/theHarvester)
+*Learn the workflow. Understand the output. Verify responsibly.*
 
 </div>
 
@@ -20,62 +19,155 @@
 
 ## 🧭 Overview
 
-This project documents a learning exercise using **theHarvester**, an open-source OSINT tool that helps collect publicly available information related to a domain. Depending on the configured data sources and available access, results can include hostnames, email addresses, IP addresses, and people-related references.
+This repository documents a hands-on **OSINT (Open-Source Intelligence) reconnaissance** exercise using [theHarvester](https://github.com/laramies/theHarvester). The practical covers Linux user administration, privilege management, obtaining the tool, selecting public data sources, and interpreting the resulting reconnaissance output.
 
-The screenshots show the tool being cloned and launched from a Linux terminal, with the search sources `hackertarget`, `crtsh`, and `certspotter`. Public screenshots in this repository have been redacted to avoid unnecessarily publishing target details.
+theHarvester helps security practitioners collect publicly available information associated with a domain, such as hostnames, email addresses, IP addresses, and names, depending on the configured data sources and their current availability.
 
-This is documentation of a reconnaissance exercise—not proof that a target is vulnerable or compromised.
+> ⚠️ **Scope note:** This README documents a learning workflow. It does not claim that the target was vulnerable, compromised, or accessed without authorization. Only investigate domains you own or have explicit permission to assess.
 
-```text
-Prepare Linux Environment
-          ↓
-Obtain theHarvester
-          ↓
-Review Help & Options
-          ↓
-Choose Approved Data Sources
-          ↓
-Run a Scoped OSINT Search
-          ↓
-Review and Validate Results
-          ↓
-Document Findings Responsibly
-```
+## 📚 Contents
 
-> ⚠️ **Ethical use:** Gather information only within an authorized assessment, approved research scope, or a lawful educational lab. Publicly available information can still be sensitive.
-
----
+- [Objectives](#-objectives)
+- [Lab environment](#️-lab-environment)
+- [Practical walkthrough](#-practical-walkthrough)
+- [Understanding the output](#-understanding-the-output)
+- [Workflow](#-reconnaissance-workflow)
+- [Key learning](#-key-learning)
+- [Responsible use](#️-responsible-use)
+- [Project structure](#-project-structure)
+- [References](#-references)
+- [Author](#-author)
 
 ## 🎯 Objectives
 
-- Understand the purpose of theHarvester in OSINT.
-- Learn how to obtain the project from its upstream repository.
-- Understand the target-domain and data-source options.
-- Run a scoped search for a domain you own or are authorized to assess.
-- Interpret discovered hostnames and other output categories.
-- Understand the limits of third-party data sources.
-- Redact identifying details before publishing evidence.
-- Document reconnaissance results clearly on GitHub.
+- Create a separate Linux user for lab work.
+- Learn how `sudo` group membership grants administrative privileges on Debian/Kali-style systems.
+- Understand the difference between a regular user, `sudo`, and a root shell.
+- Clone the upstream theHarvester repository.
+- Run a domain-focused OSINT collection using selected sources.
+- Interpret host, IP, email, and people result categories.
+- Document evidence while protecting target-specific information.
 
----
+## 🛠️ Lab environment
 
-## 🛠️ Tools & Technologies
-
-| Tool / Technology | Purpose |
+| Component | Purpose |
 |---|---|
-| 🐉 Kali Linux / Linux terminal | Command-line environment |
-| 🕵️ theHarvester | Public-information gathering |
-| 🌐 Certificate Transparency | Public certificate-related data sources |
-| 🔎 Search providers | Publicly indexed information, where supported |
-| 📝 GitHub Markdown | Lab documentation |
+| Linux / Kali-style terminal | Command-line lab environment |
+| `adduser` / `usermod` | User and group administration |
+| `sudo` / `su` | Privilege management and user switching |
+| Git | Clone the upstream repository |
+| theHarvester | Public-source OSINT collection |
+| Hackertarget, crt.sh, CertSpotter | Selected public data sources in the recorded command |
+
+The screenshots show a terminal-based Linux session. Exact package versions, available data sources, and output may vary by distribution and the current upstream release.
 
 ---
 
 # 🧪 Practical Walkthrough
 
-## 01 — Obtain the Project
+## 01 — Create a New Linux User
 
-The first screenshot shows the upstream repository being cloned.
+### Command
+
+```bash
+sudo adduser Farsana
+```
+
+### What it does
+
+Creates a separate local user account named `Farsana`. The command prompts for a password and optional profile information such as full name and contact fields.
+
+- Enter a strong password when prompted.
+- Press **Enter** to skip optional profile fields.
+- Confirm the information when asked.
+
+### 📸 Terminal evidence
+
+![Creating a new Linux user](images/01-linux-user-and-root-setup.jpg)
+
+> **Privacy tip:** Do not publish screenshots containing real passwords, personal contact information, or other account details.
+
+## 02 — Add the User to the `sudo` Group
+
+### Command
+
+```bash
+sudo usermod -aG sudo Farsana
+```
+
+### Explanation
+
+- `usermod` modifies an existing user account.
+- `-a` appends the user to the group instead of replacing their supplementary group memberships.
+- `-G sudo` adds the account to the `sudo` group.
+
+On Kali/Debian-style systems, membership in the configured `sudo` group commonly grants permission to run commands with elevated privileges. The exact policy depends on the system's sudo configuration.
+
+### Verify group membership
+
+```bash
+groups Farsana
+```
+
+Look for `sudo` in the output.
+
+## 03 — Switch to the New User
+
+### Command
+
+```bash
+su - Farsana
+```
+
+### Explanation
+
+The `su -` command switches to the specified user and starts a login shell, loading that user's environment. Enter the new user's password when prompted.
+
+The shell prompt should now show the new username.
+
+### Verify the current account
+
+```bash
+whoami
+```
+
+Expected output:
+
+```text
+Farsana
+```
+
+## 04 — Request Administrative Privileges
+
+### Command
+
+```bash
+sudo -i
+```
+
+### Explanation
+
+This requests an interactive root login shell through `sudo`. Enter the password for the account that is authorized to use `sudo`, if prompted.
+
+Verify the effective user:
+
+```bash
+whoami
+```
+
+Expected output:
+
+```text
+root
+```
+
+**Important distinction:** adding a user to the `sudo` group does not automatically make every command run as root. Use elevated privileges only when needed, and return to the regular user shell with `exit` when finished.
+
+## 05 — Clone theHarvester
+
+### Upstream repository
+
+[github.com/laramies/theHarvester](https://github.com/laramies/theHarvester)
 
 ### Command
 
@@ -86,238 +178,159 @@ cd theHarvester
 
 ### Explanation
 
-- `git clone` downloads a copy of the repository.
+- `git clone` downloads a local copy of the upstream source repository.
 - `cd theHarvester` enters the downloaded project directory.
 
-If the directory already exists, do not clone another copy over it. Enter the existing folder and consult the current upstream installation guide.
+If the directory already exists, do not clone over it. Inspect the existing checkout and follow the upstream project's current update instructions.
 
-### 📸 Terminal Evidence
+### 📸 Terminal evidence
 
-![theHarvester setup and command](images/01-installation-and-command.jpg)
+![Cloning theHarvester and preparing the command](images/02-theharvester-install-and-command.jpg)
 
----
+## 06 — Run a Domain-Focused OSINT Collection
 
-## 02 — Review Installation Requirements
-
-Installation instructions can change between releases. Use the project's current documentation rather than relying on old commands or a previously created environment.
-
-### Recommended starting points
-
-- [theHarvester repository and installation notes](https://github.com/laramies/theHarvester)
-- [Project documentation](https://github.com/laramies/theHarvester/tree/master/docs)
-
-Follow the instructions for your installed release and operating system. Avoid running unknown scripts as root unless the official documentation requires it and you understand why.
-
----
-
-## 03 — Understand the Command Structure
-
-The recorded terminal command follows this general format:
+The recorded command used the following format:
 
 ```bash
 theHarvester -d example.com -b hackertarget,crtsh,certspotter
 ```
 
-Use `example.com` only as a placeholder. Replace it only with a domain that you own or are explicitly authorized to assess.
+Replace `example.com` with a domain you own or are explicitly authorized to assess. The domain shown in the original terminal evidence has been redacted in the public screenshot.
 
-### What the options mean
+### Option breakdown
 
-| Option | Purpose |
+| Option | Meaning |
 |---|---|
-| `-d` | Specify the domain to research |
-| `-b` | Select the supported data source or sources |
-| `-h` | Display help and available options |
+| `-d` | Specifies the domain to investigate |
+| `-b` | Selects the data sources to query |
+| `hackertarget` | Queries the supported HackerTarget source |
+| `crtsh` | Uses certificate-transparency search via crt.sh |
+| `certspotter` | Uses the Cert Spotter source when supported by the installed release |
 
-Check the installed version's help output because available options and provider names can change:
+Check the version's help output and current upstream documentation for supported source names and syntax. Source availability can change, and some providers may require API keys or impose usage limits.
 
-```bash
-theHarvester -h
-```
+> **Operational note:** Although these are public-source lookups, they can still be subject to provider terms, rate limits, and organizational policies.
 
-### Sources shown in the screenshot
+## 07 — Review the Results
 
-- **Hackertarget** — a source that may provide publicly available host and DNS-related information.
-- **crt.sh / Certificate Transparency** — searches public certificate records that may reveal domain names included in certificates.
-- **CertSpotter** — a certificate-transparency-related source that may expose certificate and hostname information.
+The recorded terminal output reported:
 
-Provider availability, quotas, API requirements, and output vary. A provider returning no results does not mean that no public information exists.
+- **13 hosts found**
+- **No IPs found** in the tool's separate IP result category
+- **No emails found**
+- **No people found**
 
----
+The tool also displayed hostnames and associated IP addresses in the terminal. Those identifiers are redacted in the screenshot included here to avoid unnecessarily publishing target-specific reconnaissance data.
 
-## 04 — Run a Scoped Reconnaissance Search
+### 📸 Terminal evidence
 
-For an authorized domain, use the command syntax supported by your installed version:
+![theHarvester output with target identifiers redacted](images/03-theharvester-results-redacted.jpg)
 
-```bash
-theHarvester -d example.com -b hackertarget,crtsh,certspotter
-```
-
-### What the tool may report
-
-Depending on the source and current tool behavior, results may include:
-
-- Hostnames associated with the domain.
-- Email addresses discovered in public sources.
-- People-related references, where supported.
-- IP addresses associated with discovered hosts.
-- Status messages showing which sources were queried.
-
-**Important:** Do not assume every returned hostname is active, controlled by the same organization, or in scope for testing. Validate ownership and authorization before any further assessment.
+**How to interpret this:** the “hosts found” count indicates hostnames returned by the configured sources in that run. A separate “no IPs found” message does not necessarily mean the hostnames have no IP addresses; it means the tool did not return results in that particular result category. Output depends on the source, query, version, and time of collection.
 
 ---
 
-## 05 — Review the Output
+## 📊 Understanding the Output
 
-The second screenshot shows theHarvester banner, selected source names, source status messages, and a host count. The hostnames and IP addresses have been redacted in the public image.
+| Result category | What it generally represents |
+|---|---|
+| Hosts | Hostnames associated with the domain that were discovered through selected sources |
+| IP addresses | IP addresses returned in the relevant result category |
+| Emails | Publicly indexed email addresses associated with the query |
+| People | Names or people-related results returned by supported sources |
+| Data sources | Providers queried during the collection |
 
-### 📸 Terminal Evidence
+### Important limitations
 
-![Redacted theHarvester scan summary](images/02-scan-summary-redacted.jpg)
+- A result may be stale, duplicated, incomplete, or incorrectly attributed.
+- No result does not prove that the information does not exist.
+- A discovered hostname is not proof of a vulnerability.
+- Publicly visible data can still be sensitive; avoid unnecessary collection and disclosure.
+- Validate important findings with authorized methods before drawing conclusions.
 
-### Interpreting the displayed results
-
-The screenshot indicates that the tool queried the selected sources and displayed a host count. It also shows no results for some categories in that particular run.
-
-Those messages describe only that run. Results depend on the domain, source coverage, provider access, rate limits, configuration, and time of collection.
-
----
-
-# 📊 Understanding the Output
-
-| Output category | What it can mean | What to verify |
-|---|---|---|
-| Hosts / hostnames | Names associated with the domain in queried sources | Ownership, DNS status, and assessment scope |
-| IP addresses | Addresses associated with returned hosts | Current DNS records and attribution |
-| Emails | Publicly indexed email addresses, if returned | Relevance and privacy; avoid unnecessary disclosure |
-| People | Public references, where supported | Accuracy and whether collection is necessary |
-| Source status | Whether a provider was queried or returned data | Provider limitations, errors, and API requirements |
-
-> **A discovered hostname is not a vulnerability.** Reconnaissance results need context and verification before being included in a security report.
-
----
-
-# 🔬 OSINT Workflow
+## 🔬 Reconnaissance Workflow
 
 ```text
-       Approved Domain
-              │
-              ▼
-      theHarvester Tool
-              │
-              ▼
-     Selected Public Sources
-              │
-              ▼
-     Hostnames / Other Results
-              │
-              ▼
-      Validate and De-duplicate
-              │
-              ▼
-      Confirm Scope & Relevance
-              │
-              ▼
-      Sanitize Notes and Report
+Linux Lab Setup
+      │
+      ▼
+Create Dedicated User
+      │
+      ▼
+Configure sudo Access
+      │
+      ▼
+Clone theHarvester
+      │
+      ▼
+Select Public Data Sources
+      │
+      ▼
+Collect Domain-Related Results
+      │
+      ▼
+Review & Validate Findings
+      │
+      ▼
+Document Responsibly
 ```
 
-OSINT helps establish an initial picture of publicly visible information. It should not be treated as a complete inventory or as permission to probe every discovered system.
-
----
-
-# 🧠 Key Learning
+## 🧠 Key Learning
 
 Through this practical, I learned how to:
 
-- Obtain an open-source OSINT tool from its upstream repository.
-- Recognize the basic domain and source options.
-- Understand the role of certificate-transparency data in hostname discovery.
-- Read source status messages and host counts.
-- Interpret empty results without drawing unsupported conclusions.
-- Redact hostnames and IP addresses before public documentation.
-- Keep reconnaissance separate from vulnerability confirmation.
-- Document findings with a clear scope and responsible-use statement.
+- Create and manage a Linux user account.
+- Add a user to the `sudo` group and verify group membership.
+- Switch between user and root shells.
+- Clone a security tool from GitHub.
+- Use theHarvester's domain and source options.
+- Understand the difference between host, IP, email, and people result categories.
+- Document a reconnaissance workflow while redacting target-specific information.
 
----
+## 🛡️ Responsible Use
 
-# 🛡️ Scope & Authorization
+This repository is for **cybersecurity education and authorized OSINT practice**.
 
-| Activity | Environment | Authorization |
-|---|---|---|
-| Tool setup | Local Linux environment | Own system |
-| Public-source lookup | Domain you own or have approval to research | Follow applicable rules and scope |
-| Reviewing hostnames | Local notes / report | Validate ownership and relevance |
-| Active testing of discovered hosts | Separate assessment activity | Explicit permission required |
-| Publishing results | GitHub repository | Remove sensitive and identifying data |
+- Investigate only domains you own or have explicit authorization to assess.
+- Respect source-provider terms, rate limits, applicable laws, and organizational policies.
+- Do not use collected information to harass, dox, impersonate, or target individuals.
+- Redact personal information, internal hostnames, IP addresses, tokens, and other sensitive details before publishing evidence.
+- Treat results as leads for verification, not confirmed security findings.
+- Use root privileges only when required; prefer least privilege.
 
-> 🔐 **Only investigate domains within your approved scope.** Public availability does not automatically grant permission to test, access, or exploit a discovered host.
-
-Do not publish credentials, API keys, private contact details, personal data, or unredacted host inventories without a valid reason and authorization.
-
----
-
-# 📁 Project Structure
+## 📁 Project Structure
 
 ```text
 theharvester-osint-lab/
-│
 ├── README.md
-│
 └── images/
-    ├── 01-installation-and-command.jpg
-    └── 02-scan-summary-redacted.jpg
+    ├── 01-linux-user-and-root-setup.jpg
+    ├── 02-theharvester-install-and-command.jpg
+    └── 03-theharvester-results-redacted.jpg
 ```
 
-Keep the `images/` folder and filenames unchanged so GitHub can render the screenshot links.
+## 🔗 References
+
+- [theHarvester — upstream GitHub repository](https://github.com/laramies/theHarvester)
+- [theHarvester documentation](https://github.com/laramies/theHarvester/wiki)
+- [HackerTarget](https://hackertarget.com/)
+- [crt.sh — Certificate Transparency Search](https://crt.sh/)
+- [Cert Spotter](https://sslmate.com/certspotter/)
+- [PsychoMods — GitHub profile](https://github.com/Psychomods666)
 
 ---
 
-# 📸 Screenshots Gallery
-
-<details>
-<summary><strong>📷 Screenshot 1 — Repository Setup and Command</strong></summary>
-
-![theHarvester setup screenshot](images/01-installation-and-command.jpg)
-
-*Shows the repository being cloned, the project directory being opened, and the command being prepared.*
-
-</details>
-
-<details>
-<summary><strong>📷 Screenshot 2 — Source Search and Results</strong></summary>
-
-![theHarvester redacted result screenshot](images/02-scan-summary-redacted.jpg)
-
-*Shows the tool banner, selected sources, status messages, and a result count. Target-specific hostnames and IP addresses are redacted.*
-
-</details>
-
----
-
-# 🚀 Future Improvements
-
-- [ ] Record the installed theHarvester version.
-- [ ] Add sanitized sample output from a dedicated lab domain.
-- [ ] Compare results from different supported public sources.
-- [ ] Document how certificate-transparency records are created.
-- [ ] Add a repeatable note template for source, date, and scope.
-- [ ] Verify discovered hostnames against approved asset inventories.
-- [ ] Create a structured OSINT summary without exposing unnecessary personal data.
-
----
-
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 <div align="center">
 
-## PsychoMods
+### PsychoMods
 
-**Cybersecurity · Ethical Hacking · OSINT · Technology**
+**Cybersecurity • OSINT • Ethical Hacking • Security Education**
 
-Learning by building, testing, and documenting.
+[GitHub](https://github.com/Psychomods666)
 
-[![GitHub](https://img.shields.io/badge/GitHub-Psychomods666-181717?style=for-the-badge&logo=github)](https://github.com/Psychomods666)
-
-**Cybersecurity Learning Project**
+*Learn • Test • Verify • Secure*
 
 </div>
 
@@ -325,10 +338,6 @@ Learning by building, testing, and documenting.
 
 <div align="center">
 
-### 🔐 Learn • Research • Verify • Document
-
-<sub>Created for cybersecurity education and authorized OSINT research.</sub>
-
-<sub>theHarvester is an upstream open-source project. This repository contains personal lab notes and is not an official theHarvester project.</sub>
+*Personal educational lab notes. Not an official theHarvester project.*
 
 </div>
