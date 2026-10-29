@@ -185,7 +185,7 @@ If the directory already exists, do not clone over it. Inspect the existing chec
 
 ### 📸 Terminal evidence
 
-![Cloning theHarvester and preparing the command](02-theharvester-install-and-command.jpg)
+![Cloning theHarvester and preparing the command](image/02-theharvester-install-and-command.jpg)
 
 ## 06 — Run a Domain-Focused OSINT Collection
 
@@ -224,7 +224,7 @@ The tool also displayed hostnames and associated IP addresses in the terminal. T
 
 ### 📸 Terminal evidence
 
-![theHarvester output with target identifiers redacted](03-theharvester-results-redacted.jpg)
+![theHarvester output with target identifiers redacted](image/03-theharvester-results-redacted.jpg)
 
 **How to interpret this:** the “hosts found” count indicates hostnames returned by the configured sources in that run. A separate “no IPs found” message does not necessarily mean the hostnames have no IP addresses; it means the tool did not return results in that particular result category. Output depends on the source, query, version, and time of collection.
 
