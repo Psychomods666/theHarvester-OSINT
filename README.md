@@ -83,7 +83,7 @@ Creates a separate local user account named `Farsana`. The command prompts for a
 
 ### 📸 Terminal evidence
 
-![Creating a new Linux user](01-linux-user-and-root-setup.jpg)
+![Creating a new Linux user](image/01-linux-user-and-root-setup.jpg)
 
 > **Privacy tip:** Do not publish screenshots containing real passwords, personal contact information, or other account details.
 
