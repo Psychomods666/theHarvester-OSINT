@@ -83,7 +83,7 @@ Creates a separate local user account named `Farsana`. The command prompts for a
 
 ### 📸 Terminal evidence
 
-![Creating a new Linux user](images/01-linux-user-and-root-setup.jpg)
+![Creating a new Linux user](01-linux-user-and-root-setup.jpg)
 
 > **Privacy tip:** Do not publish screenshots containing real passwords, personal contact information, or other account details.
 
@@ -185,7 +185,7 @@ If the directory already exists, do not clone over it. Inspect the existing chec
 
 ### 📸 Terminal evidence
 
-![Cloning theHarvester and preparing the command](images/02-theharvester-install-and-command.jpg)
+![Cloning theHarvester and preparing the command](02-theharvester-install-and-command.jpg)
 
 ## 06 — Run a Domain-Focused OSINT Collection
 
@@ -224,7 +224,7 @@ The tool also displayed hostnames and associated IP addresses in the terminal. T
 
 ### 📸 Terminal evidence
 
-![theHarvester output with target identifiers redacted](images/03-theharvester-results-redacted.jpg)
+![theHarvester output with target identifiers redacted](03-theharvester-results-redacted.jpg)
 
 **How to interpret this:** the “hosts found” count indicates hostnames returned by the configured sources in that run. A separate “no IPs found” message does not necessarily mean the hostnames have no IP addresses; it means the tool did not return results in that particular result category. Output depends on the source, query, version, and time of collection.
 
@@ -303,10 +303,9 @@ This repository is for **cybersecurity education and authorized OSINT practice**
 ```text
 theharvester-osint-lab/
 ├── README.md
-└── images/
-    ├── 01-linux-user-and-root-setup.jpg
-    ├── 02-theharvester-install-and-command.jpg
-    └── 03-theharvester-results-redacted.jpg
+├── 01-linux-user-and-root-setup.jpg
+├── 02-theharvester-install-and-command.jpg
+└── 03-theharvester-results-redacted.jpg
 ```
 
 ## 🔗 References
